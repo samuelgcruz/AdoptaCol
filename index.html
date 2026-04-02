@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdoptaCol - Adopción Responsable de Mascotas</title>
+
+    <!-- Bootstrap base sólida de estilos y componentes reutilizables -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Nuestros estilos personalizados -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+    <!-- =====================================================================
+         1.BARRA DE NAVEGACIÓN
+         La barra fija de arriba con el logo y los enlaces principales.
+         navbar-expand hace que siempre esté desplegada, nunca se colapse.
+    ====================================================================== -->
+    <nav class="navbar navbar-expand navbar-light bg-light shadow-sm">
+        <div class="container">
+
+            <!-- Nombre/logo que al hacer clic lleva al inicio -->
+            <a class="navbar-brand fw-bold text-primary" href="#">AdoptaCol</a>
+
+            <!-- Los enlaces del menú, alineados a la derecha con ms-auto -->
+            <div class="navbar-nav ms-auto align-items-center">
+                <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                <a class="nav-link" href="#">Refugios</a>
+                <a class="nav-link" href="#">Veterinarias Solidarias</a>
+
+                <!-- El botón de iniciar sesión  -->
+                <a class="btn btn-primary px-4 text-white rounded-pill ms-3" href="#">Iniciar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- =====================================================================
+         2.LO PRIMERO QUE VE EL USUARIO
+         Banner grande con imagen de fondo, texto y un botón
+         que baja directo a ver las mascotas. El scroll funciona sin necesidad de JavaScript.
+    ====================================================================== -->
+    <header class="hero-section text-center text-white d-flex align-items-center justify-content-center">
+        <div class="container px-4">
+            <h1 class="display-4 fw-bold mb-3">Dales una Segunda Oportunidad</h1>
+            <p class="lead mb-4">
+                La adopción responsable salva vidas y combate el abandono en nuestro país. <br>
+                Sé el puente de esperanza y encuentra a tu mejor amigo hoy.
+            </p>
+            <a href="#galeria" class="btn btn-light btn-lg text-primary fw-bold rounded-pill shadow">
+                Ver Mascotas Disponibles
+            </a>
+        </div>
+    </header>
+
+
+    <!-- =====================================================================
+         3.FILTROS DE BÚSQUEDA
+         Formulario para el usuario para la mascota que está buscando.
+         Cada campo filtra por un criterio: ciudad, edad, tamaño y raza.
+    ====================================================================== -->
+    <section class="container my-5 custom-filters-container">
+        <h2 class="text-center mb-4 fs-3 fw-bold text-secondary">Encuentra a tu compañero ideal</h2>
+
+        <form class="row g-3 justify-content-center align-items-end">
+
+            <!-- ¿En qué ciudad de Colombia está el usuario buscando? -->
+            <div class="col-2">
+                <label for="ciudad" class="form-label text-muted small">Ciudad</label>
+                <select id="ciudad" class="form-select border-primary">
+                    <option selected>Todas</option>
+                    <option value="bogota">Bogotá</option>
+                    <option value="medellin">Medellín</option>
+                    <option value="cali">Cali</option>
+                </select>
+            </div>
+
+            <!-- Si alguien quiere cachorro o prefiere un adulto -->
+            <div class="col-2">
+                <label for="edad" class="form-label text-muted small">Edad</label>
+                <select id="edad" class="form-select border-primary">
+                    <option selected>Cualquiera</option>
+                    <option value="cachorro">Cachorro</option>
+                    <option value="adulto">Adulto</option>
+                </select>
+            </div>
+
+            <!-- Tamaño del que desea la mascota -->
+            <div class="col-2">
+                <label for="tamano" class="form-label text-muted small">Tamaño</label>
+                <select id="tamano" class="form-select border-primary">
+                    <option selected>Todos</option>
+                    <option value="pequeno">Pequeño</option>
+                    <option value="mediano">Mediano</option>
+                    <option value="grande">Grande</option>
+                </select>
+            </div>
+
+            <!-- Por si alguien quiere criollo o le llama la atención una raza específica -->
+            <div class="col-2">
+                <label for="raza" class="form-label text-muted small">Tipo/Raza</label>
+                <select id="raza" class="form-select border-primary">
+                    <option selected>Indiferente</option>
+                    <option value="criollo">Mestizo (Criollo)</option>
+                    <option value="pura">Raza Pura</option>
+                </select>
+            </div>
++
+            <!-- El botón que manda todos los filtros juntos -->
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary w-100 fw-bold">Buscar</button>
+            </div>
+
+        </form>
+    </section>
+
+
+    <!-- =====================================================================
+         4.GALERÍA DE MASCOTAS
+         Parte donde esta el perfil de las mascotas disponibles.
+    ====================================================================== -->
+    <main id="galeria" class="container my-5">
+        <div class="text-center mb-5">
+            <h3 class="fw-bold">Peluditos Esperando un Hogar</h3>
+            <p class="text-muted">Conoce a los rescatados listos para llenar tu vida de amor.</p>
+        </div>
+
+        <!-- El grid reparte los perfiles en 4 columnas fijas -->
+        <div class="mascotas-grid">
+
+            <!-- Luna: mestiza de 2 años, tranquila y lista para ser adoptada -->
+            <article class="mascota-card">
+                <img src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                     alt="Luna - Perrita Mestiza" class="mascota-img">
+                <div class="card-content">
+                    <h4 class="mascota-nombre">Luna</h4>
+                    <p class="mascota-detalle">Mestiza (Criolla) · 2 años</p>
+                    <span class="status-badge bg-success">Disponible</span>
+                </div>
+            </article>
+
+            <!-- Max: labrador de 4 años, energético y muy cariñoso -->
+            <article class="mascota-card">
+                <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                     alt="Max - Perro Labrador" class="mascota-img">
+                <div class="card-content">
+                    <h4 class="mascota-nombre">Max</h4>
+                    <p class="mascota-detalle">Labrador Retriever · 4 años</p>
+                    <span class="status-badge bg-success">Disponible</span>
+                </div>
+            </article>
+
+            <!-- Milo: gatito de 8 meses, ideal para espacios pequeños -->
+            <article class="mascota-card">
+                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                     alt="Milo - Gato rescatado" class="mascota-img">
+                <div class="card-content">
+                    <h4 class="mascota-nombre">Milo</h4>
+                    <p class="mascota-detalle">Gato Criollo · 8 meses</p>
+                    <span class="status-badge bg-success">Disponible</span>
+                </div>
+            </article>
+
+            <!-- Kira: husky de 1 año, ya hay alguien interesado pero no está cerrado -->
+            <article class="mascota-card">
+                <img src="https://images.unsplash.com/photo-1617895153857-82fe79adfcd4?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                     alt="Kira - Perra Husky Siberiano" class="mascota-img">
+                <div class="card-content">
+                    <h4 class="mascota-nombre">Kira</h4>
+                    <p class="mascota-detalle">Husky Siberiano · 1 año</p>
+                    <!-- Amarillo porque no está libre del todo, pero tampoco ocupado -->
+                    <span class="status-badge bg-warning text-dark">En proceso de adopción</span>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+
+    <!-- =====================================================================
+         5.CIERRE DE LA PÁGINA
+         Sección del final con el nombre, la misión y el copyright.
+         mt-auto es lo que hace que siempre quede pegado al fondo,
+         incluso si la página tiene poco contenido arriba.
+    ====================================================================== -->
+    <footer class="bg-dark text-light py-5 mt-auto">
+        <div class="container text-center">
+            <h5 class="fw-bold text-primary">AdoptaCol</h5>
+            <p class="mb-3">Promoviendo el bienestar animal y la adopción responsable en toda Colombia.</p>
+            <p class="small text-secondary mb-0">&copy; 2026 AdoptaCol - Plataforma de Adopción. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

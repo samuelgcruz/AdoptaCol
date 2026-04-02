@@ -1,0 +1,182 @@
+/* ==========================================================================
+   BODY color de fondo de la página, fuente general y estructura de flexbox 
+   para el footer pegado al fondo.
+   ========================================================================== */
+   body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fcfcfc;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+/* ==========================================================================
+   HERO — EL BANNER GRANDE DE ENTRADA
+   El padding de 120px arriba y de la portada.
+   El degradado azul oscuro va encima de la foto como una capa semitransparente,
+   así el texto blanco se puede leer sin importar qué tan clara sea la imagen.
+   ========================================================================== */
+.hero-section {
+    /* Sin este padding el banner quedaría como una franja delgada */
+    padding: 120px 20px;
+
+    /* Primero el degradado, después la foto.
+       el degradado tapa parcialmente la imagen para que el texto este bonito */
+    background: linear-gradient(rgba(13, 110, 253, 0.85), rgba(0, 50, 120, 0.85)),
+                url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+}
+
+
+/* ==========================================================================
+   CAJA DE FILTROS
+   Una tarjeta blanca flotante donde viven los selectores de búsqueda.
+   La sombra muy tenue le da la sensación de que está levantada del fondo
+   sin que se vea exagerada ni anticuada.
+   ========================================================================== */
+.custom-filters-container {
+    background-color: #ffffff;
+
+    /* El borde finísimo define dónde termina la caja */
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+
+    /* El padding interno es lo que evita que los selectores toquen los bordes */
+    padding: 30px;
+
+    /* Sombra casi invisible, solo para dar profundidad */
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+
+/* ==========================================================================
+   GALERÍA — CSS GRID DE ESCRITORIO
+   Cuatro columnas fijas que se reparten el espacio disponible por igual.
+   ========================================================================== */
+.mascotas-grid {
+    display: grid;
+
+    /* 4 columnas que se distribuyen el ancho de forma equitativa */
+    grid-template-columns: repeat(4, 1fr);
+
+    /* El gap es el espacio entre perfil y perfil, en horizontal y vertical */
+    gap: 30px;
+
+    /* Para que el grid no quede pegado a los títulos */
+    padding: 20px 0;
+}
+
+
+/* ==========================================================================
+   PERFIL DE MASCOTA
+   La cajita blanca que envuelve foto, nombre, raza de cada animal.
+   Capas del box model trabajando juntas:
+   el border que la enmarca, el margin que la separa (via gap)
+   y el padding adentro en .card-content que deja bonito el texto.
+   ========================================================================== */
+.mascota-card {
+    background-color: #ffffff;
+
+    /* BORDER: el contorno gris claro que define dónde empieza y termina el perfil */
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    /* Sin esto la foto se desbordaría sobre las esquinas redondeadas de arriba */
+    overflow: hidden;
+
+    /* MARGIN en cero para que el gap del grid tenga el control total del espacio entre perfiles */
+    margin: 0;
+
+    /* Sombra suave para que los perfiles parezcan estar sobre la página, no pegados a ella */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+    /* La transición hace que el efecto hover se sienta fluido, no como un salto brusco */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Al pasar el mouse encima la tarjeta sube 8px, como si se despegara de la pantalla */
+.mascota-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+
+/* ==========================================================================
+   FOTO DE LA MASCOTA
+   Todas las imágenes tienen la misma altura fija para que el grid
+   quede ordenado aunque las fotos vengan en proporciones distintas.
+   ========================================================================== */
+.mascota-img {
+    /* Ancho completo del perfil, siempre -->
+    width: 100%;
+
+    /* Altura fija para que ninguna foto más alta o más baja rompa la uniformidad */
+    height: 240px;
+
+    /* object-fit: cover recorta la foto inteligentemente para llenar
+       el espacio sin estirarla ni deformarla, como un zoom centrado */
+    object-fit: cover;
+
+    /* display: block borra el pequeño espacio fantasma que dejan las imagenes abajo por defecto */
+    display: block;
+
+    /* Esta línea separa visualmente la foto del área de texto que viene después */
+    border-bottom: 2px solid #e5e7eb;
+}
+
+
+/* ==========================================================================
+   ÁREA DE TEXTO DEL PERFIL DE LA MASCOTA
+   ========================================================================== */
+
+/* PADDING: el espacio interno que evita que el texto toque los bordes de la tarjeta.
+   Sin esto el nombre y la raza quedarían aplastados contra los lados */
+.card-content {
+    padding: 24px;
+}
+
+/* Nombre del animal en grande y negrita */
+.mascota-nombre {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #212529;
+
+    /* MARGIN-BOTTOM: el espacio que separa el nombre del texto de la raza abajo */
+    margin: 0;
+    margin-bottom: 8px;
+}
+
+/* Raza y edad en gris */
+.mascota-detalle {
+    font-size: 0.95rem;
+    color: #6c757d;
+
+    /* MARGIN-BOTTOM: el espacio que separa la raza del texto de la edad abajo */
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+
+/* ==========================================================================
+   ESTADO Si ESTÁ DISPONIBLE O EN PROCESO DE ADOPCIÓN
+   Espacio que dice si el animal está disponible o en proceso.
+   El color (verde o amarillo) lo pone Bootstrap, aquí solo le damos
+   la forma, el tamaño y el estilo del texto.
+   ========================================================================== */
+.status-badge {
+    /* PADDING: sin esto el estado quedaría como texto sin forma */
+    padding: 6px 14px;
+
+    /* Bordes muy redondeados para que parezca una cápsula */
+    border-radius: 20px;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    /* Mayúsculas y espaciado entre letras para que se lea como una etiqueta oficial */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    /* inline-block para que el padding funcione bien en un elemento <span> */
+    display: inline-block;
+}
