@@ -32,33 +32,64 @@
          - Iniciar Sesión → data-bs-toggle="modal" le dice a Bootstrap que
            abra el modal con id="#modalLogin" sin escribir JS extra.
     ====================================================================== -->
-    <nav class="navbar navbar-expand navbar-light bg-light shadow-sm">
+    <!--
+         MÓVIL — navbar-expand-lg: desplegada en pantallas grandes (≥992px),
+         colapsada (menú hamburguesa) en pantallas más pequeñas como celulares.
+         Antes era navbar-expand (siempre desplegada) lo que hacía que en celular
+         los links se salieran de la pantalla o se apiñaran sin poder verse bien.
+    -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div class="container">
 
             <!-- Nombre/logo: al hacer clic sube la página con animación suave -->
             <a class="navbar-brand fw-bold text-primary" href="#" onclick="scrollToTop(event)">AdoptaCol</a>
 
-            <!-- Los enlaces del menú, alineados a la derecha con ms-auto -->
-            <div class="navbar-nav ms-auto align-items-center">
+            <!--
+                 MÓVIL — botón hamburguesa (las 3 rayitas).
+                 Solo aparece en pantallas menores a lg (992px), Bootstrap lo oculta
+                 automáticamente en escritorio con d-lg-none implícito en el collapse.
+                 data-bs-toggle="collapse" + data-bs-target="#menuNav" le dicen a
+                 Bootstrap qué div debe mostrar u ocultar al hacer clic, sin JS extra.
+            -->
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#menuNav"
+                    aria-controls="menuNav" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <!-- Inicio: llama a scrollToTop() para subir con animación suave -->
-                <a class="nav-link active" aria-current="page" href="#" onclick="scrollToTop(event)">Inicio</a>
+            <!--
+                 MÓVIL — div colapsable que envuelve los links.
+                 En escritorio siempre está visible; en celular empieza oculto
+                 y el botón hamburguesa de arriba lo muestra/oculta.
+                 ms-auto sigue empujando los links a la derecha en escritorio.
+            -->
+            <div class="collapse navbar-collapse" id="menuNav">
+                <div class="navbar-nav ms-auto align-items-center">
 
-                <!-- Refugios: href="#refugios" hace scroll suave hasta la sección
-                     con id="refugios" que está más abajo en este mismo archivo.
-                     El navegador maneja el scroll solo gracias a scroll-behavior:smooth en el CSS. -->
-                <a class="nav-link" href="#refugios">Refugios</a>
+                    <!-- Inicio: llama a scrollToTop() para subir con animación suave -->
+                    <a class="nav-link active" aria-current="page" href="#" onclick="scrollToTop(event)">Inicio</a>
 
-                <!-- Veterinarias: igual que Refugios, apunta al id="veterinarias"
-                     que está en la sección correspondiente más abajo. -->
-                <a class="nav-link" href="#veterinarias">Veterinarias Solidarias</a>
+                    <!-- Refugios: href="#refugios" hace scroll suave hasta la sección
+                         con id="refugios" que está más abajo en este mismo archivo.
+                         El navegador maneja el scroll solo gracias a scroll-behavior:smooth en el CSS. -->
+                    <a class="nav-link" href="#refugios">Refugios</a>
 
-                <!-- Botón de login: data-bs-toggle + data-bs-target le dicen a Bootstrap
-                     que abra el modal con id="modalLogin" al hacer clic. Sin JS manual. -->
-                <button class="btn btn-primary px-4 text-white rounded-pill ms-3"
-                        data-bs-toggle="modal" data-bs-target="#modalLogin">
-                    Iniciar Sesión
-                </button>
+                    <!-- Veterinarias: igual que Refugios, apunta al id="veterinarias"
+                         que está en la sección correspondiente más abajo. -->
+                    <a class="nav-link" href="#veterinarias">Veterinarias Solidarias</a>
+
+                    <!-- Botón de login: data-bs-toggle + data-bs-target le dicen a Bootstrap
+                         que abra el modal con id="modalLogin" al hacer clic. Sin JS manual. -->
+                    <button class="btn btn-primary px-4 text-white rounded-pill ms-3 mt-2 mt-lg-0"
+                            data-bs-toggle="modal" data-bs-target="#modalLogin">
+                        Iniciar Sesión
+                    </button>
+                    <!--
+                         mt-2 mt-lg-0: en móvil el botón necesita un pequeño margen
+                         superior porque los links están apilados en columna.
+                         En escritorio (lg) ese margen vuelve a 0 porque están en fila.
+                    -->
+                </div>
             </div>
         </div>
     </nav>
@@ -97,8 +128,17 @@
         <!-- onsubmit="return false" evita que el form recargue la página al presionar Enter -->
         <form class="row g-3 justify-content-center align-items-end" onsubmit="return false;">
 
+            <!--
+                 MÓVIL — los filtros.
+                 Antes eran col-2 fijos, lo que en celular los aplastaba a un ancho
+                 mínimo ilegible. Ahora usan clases responsivas de Bootstrap:
+                 · col-6: en celular ocupa la mitad del ancho → 2 selects por fila
+                 · col-md-4: en tableta ocupa un tercio → 3 por fila
+                 · col-lg-2: en escritorio vuelve al col-2 original → 4 por fila
+            -->
+
             <!-- ¿En qué ciudad de Colombia está el usuario buscando? -->
-            <div class="col-2">
+            <div class="col-6 col-md-4 col-lg-2">
                 <label for="ciudad" class="form-label text-muted small">Ciudad</label>
                 <!-- data-filtro="ciudad" le dice al JS qué atributo data- leer en la tarjeta -->
                 <select id="ciudad" class="form-select border-primary" data-filtro="ciudad">
@@ -110,7 +150,7 @@
             </div>
 
             <!-- Si alguien quiere cachorro o prefiere un adulto -->
-            <div class="col-2">
+            <div class="col-6 col-md-4 col-lg-2">
                 <label for="edad" class="form-label text-muted small">Edad</label>
                 <select id="edad" class="form-select border-primary" data-filtro="edad">
                     <option value="">Cualquiera</option>
@@ -120,7 +160,7 @@
             </div>
 
             <!-- Tamaño del que desea la mascota -->
-            <div class="col-2">
+            <div class="col-6 col-md-4 col-lg-2">
                 <label for="tamano" class="form-label text-muted small">Tamaño</label>
                 <select id="tamano" class="form-select border-primary" data-filtro="tamano">
                     <option value="">Todos</option>
@@ -131,7 +171,7 @@
             </div>
 
             <!-- Por si alguien quiere criollo o le llama la atención una raza específica -->
-            <div class="col-2">
+            <div class="col-6 col-md-4 col-lg-2">
                 <label for="raza" class="form-label text-muted small">Tipo/Raza</label>
                 <select id="raza" class="form-select border-primary" data-filtro="raza">
                     <option value="">Indiferente</option>
@@ -140,16 +180,22 @@
                 </select>
             </div>
 
+            <!--
+                 MÓVIL — botones de acción.
+                 col-6 los pone en una fila de dos en celular (uno al lado del otro).
+                 col-auto en escritorio los deja con su ancho natural, igual que antes.
+            -->
+
             <!-- Buscar: aplica todos los filtros activos sobre las tarjetas -->
-            <div class="col-auto">
-                <button type="button" class="btn btn-primary fw-bold px-4" onclick="filtrarMascotas()">
+            <div class="col-6 col-md-auto">
+                <button type="button" class="btn btn-primary fw-bold px-4 w-100" onclick="filtrarMascotas()">
                     <i class="bi bi-search me-1"></i> Buscar
                 </button>
             </div>
 
             <!-- Limpiar: borra todos los filtros y muestra todas las mascotas de nuevo -->
-            <div class="col-auto">
-                <button type="button" class="btn btn-outline-secondary fw-bold px-4" onclick="limpiarFiltros()">
+            <div class="col-6 col-md-auto">
+                <button type="button" class="btn btn-outline-secondary fw-bold px-4 w-100" onclick="limpiarFiltros()">
                     <i class="bi bi-x-circle me-1"></i> Limpiar
                 </button>
             </div>
