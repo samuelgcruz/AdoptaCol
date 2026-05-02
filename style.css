@@ -458,153 +458,78 @@ body {
    -------------------------------------------------------------------------- */
 @media (max-width: 575px) {
 
-    /* MÓVIL — galería en columna única.
-       Una sola columna: cada mascota ocupa todo el ancho de la pantalla.
+    /* Una sola columna: cada mascota ocupa todo el ancho de la pantalla.
        Así la foto, el nombre y el botón se ven grandes y fáciles de tocar. */
     .mascotas-grid {
         grid-template-columns: 1fr;
         gap: 16px;
     }
 
-    /* MÓVIL — refugios y veterinarias también en columna única en celular. */
+    /* Refugios y veterinarias también en columna única en celular. */
     .refugios-grid {
         grid-template-columns: 1fr;
         gap: 16px;
     }
 
-    /* MÓVIL — hero con menos padding vertical.
-       El hero reduce bastante el padding para que el texto quepa sin
+    /* El hero reduce bastante el padding para que el texto quepa sin
        verse apretado y el botón quede visible sin hacer scroll. */
     .hero-section {
         padding: 60px 16px;
     }
 
-    /* MÓVIL — h1 del hero más pequeño.
-       En escritorio era display-4 (~2.5rem). En celular lo achicamos
-       para que no ocupe más de 2 líneas y deje espacio al párrafo y botón. */
+    /* El h1 del hero era display-4 (Bootstrap ~2.5rem). En celular lo
+       achicamos un poco para que no ocupe más de 2 líneas. */
     .hero-section h1 {
         font-size: 1.9rem;
     }
 
-    /* MÓVIL — párrafo del hero con tamaño de fuente reducido.
-       El .lead de Bootstrap es 1.25rem, lo que en celular hace que el
-       párrafo ocupe demasiadas líneas y empuje el botón fuera de la pantalla
-       inicial. Con 1rem el texto es cómodo de leer y todo cabe sin scroll. */
-    .hero-section p.lead {
-        font-size: 1rem;
-    }
-
-    /* MÓVIL — filtros con menos padding interno.
-       Los 30px originales de cada lado le robaban mucho ancho a los selects.
-       Con 16px los controles tienen todo el espacio disponible. */
+    /* La caja de filtros tenía 30px de padding. En celular la reducimos
+       para que los selects no queden pegados al borde de la pantalla. */
     .custom-filters-container {
         padding: 20px 16px;
     }
 
-    /* MÓVIL — tarjeta de refugio/veterinaria apilada en columna.
-       En escritorio el ícono queda a la izquierda y el texto a la derecha
-       (flex-direction:row). En celular los apilamos en columna para que
-       el texto tenga todo el ancho disponible sin quedar comprimido. */
+    /* Las tarjetas de refugio/veterinaria tenían ícono a la izquierda
+       y texto a la derecha (flex-direction:row). En celular los apilamos
+       en columna para que el texto tenga todo el ancho disponible. */
     .refugio-card {
         flex-direction: column;
-        align-items: center;
+        align-items: center;   /* centra el ícono horizontalmente */
         text-align: center;
     }
 
-    /* MÓVIL — área de texto de la tarjeta centrada.
-       Con la tarjeta en columna, el texto se centra para verse equilibrado
-       debajo del ícono circular. */
+    /* Con la tarjeta en columna, el texto ya no necesita alinearse al inicio;
+       lo centramos para que se vea equilibrado debajo del ícono. */
     .refugio-info {
         text-align: center;
     }
 
-    /* MÓVIL — lista de servicios.
-       El bloque se centra con la tarjeta pero los ítems individuales
-       se alinean a la izquierda para que los íconos de check formen
-       una columna y sean fáciles de escanear visualmente. */
+    /* La lista de servicios también se centra para que coincida con el texto. */
     .refugio-servicios {
-        text-align: left;
+        text-align: left;  /* pero los ítems individuales se leen mejor a la izquierda */
         display: inline-block;
     }
 
-    /* MÓVIL — altura de la foto de mascota reducida.
-       En escritorio 240px es generoso porque la tarjeta es angosta (1/4 del ancho).
-       En celular la tarjeta ocupa todo el ancho, así que 240px de foto obliga al
-       usuario a hacer demasiado scroll para llegar al botón.
-       Con 190px la foto sigue siendo atractiva y el contenido importante queda visible. */
+    /*
+       MÓVIL — altura de la foto de mascota.
+       En escritorio los 240px dan una foto generosa porque la tarjeta es angosta
+       (1/4 del ancho). En celular la tarjeta ocupa el ancho completo, así que
+       240px de foto hacen que el usuario tenga que hacer mucho scroll solo para
+       ver el nombre y el botón. Con 190px la foto sigue siendo atractiva y el
+       contenido importante queda visible sin bajar.
+    */
     .mascota-img {
         height: 190px;
     }
 
-    /* MÓVIL — padding del área de texto de la tarjeta de mascota.
-       Los 24px originales de cada lado en celular (ancho total) dejaban el
+    /*
+       MÓVIL — padding interno del área de texto de la tarjeta.
+       Los 24px de cada lado en escritorio funcionan bien porque la tarjeta es
+       angosta. En celular eso son 48px robados al texto en total, dejando el
        nombre y la raza en un espacio muy estrecho. Con 16px el texto respira
-       y el botón "Me interesa" queda con mejor proporción visual. */
+       y el botón "Me interesa" queda con mejor proporción.
+    */
     .card-content {
         padding: 16px;
-    }
-
-    /* MÓVIL — botón "Me interesa" más fácil de tocar.
-       La zona táctil mínima recomendada por Google es 48px de alto.
-       Ajustamos el padding para llegar a esa altura sin que el botón
-       se vea desproporcionado dentro de la tarjeta. */
-    .btn-interes,
-    .btn-interes--deshabilitado {
-        padding: 12px 16px;
-        font-size: 1rem;
-    }
-
-    /* MÓVIL — nombre del animal con tamaño ligeramente reducido.
-       El 1.4rem original en pantalla completa se ve bien en escritorio,
-       pero en celular (tarjeta de ancho completo) ese tamaño hace que el
-       nombre compita demasiado con la foto. Con 1.2rem sigue siendo prominente
-       y el texto de detalle debajo queda en mejor proporción. */
-    .mascota-nombre {
-        font-size: 1.2rem;
-    }
-
-    /* MÓVIL — footer con padding reducido.
-       En escritorio el py-5 (48px arriba y abajo) deja espacio generoso.
-       En celular eso empuja el scroll más de lo necesario para una sección
-       tan corta. Con 32px el footer se ve completo y bien delimitado. */
-    footer {
-        padding-top: 32px !important;
-        padding-bottom: 32px !important;
-    }
-
-    /* MÓVIL — modal adaptado al ancho del celular.
-       Bootstrap centra el modal con márgenes laterales de 8px por defecto.
-       Reducimos ese margen para que el formulario del modal aproveche mejor
-       el ancho real de la pantalla y los campos de texto no queden muy angostos. */
-    .modal-dialog {
-        margin: 12px;
-    }
-
-    /* MÓVIL — sección de veterinarias con padding reducido.
-       El bg-light de veterinarias tenía py-5 (48px). En celular ese espacio
-       vertical hace que la sección parezca infinita. Con 32px la separación
-       visual es clara sin desperdiciar espacio. */
-    #veterinarias {
-        padding-top: 32px !important;
-        padding-bottom: 32px !important;
-    }
-
-    /* MÓVIL — espaciado de secciones más compacto.
-       Las secciones usaban my-5 (48px arriba y abajo). En celular eso acumula
-       mucho espacio en blanco entre sección y sección, haciendo que el usuario
-       sienta que hay muy poco contenido por pantalla. Con my reducido el flujo
-       se siente más natural y el scroll más eficiente. */
-    .container.my-5 {
-        margin-top: 32px !important;
-        margin-bottom: 32px !important;
-    }
-
-    /* MÓVIL — encabezados de sección más compactos.
-       Los mb-5 de los div.text-center que encabezan cada sección dejaban
-       40px de separación entre el título y el grid de tarjetas.
-       En celular eso es demasiado; con 24px la relación visual entre
-       título y contenido es más directa. */
-    .text-center.mb-5 {
-        margin-bottom: 24px !important;
     }
 }
