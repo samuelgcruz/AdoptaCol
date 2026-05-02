@@ -401,3 +401,99 @@ body {
 .refugio-servicios li {
     margin-bottom: 4px;
 }
+
+
+/* ==========================================================================
+   RESPONSIVE — MEDIA QUERIES PARA CELULAR Y TABLETA
+   Todo lo de arriba en este archivo es para escritorio.
+   Lo que está abajo solo entra en acción cuando la pantalla es más pequeña.
+   No tocamos nada de los estilos originales; solo los sobreescribimos
+   dentro de cada @media para el tamaño que corresponde.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   TABLETA — pantallas entre 576px y 991px (ej: iPad, Galaxy Tab)
+   Bootstrap llama a este rango "sm" y "md".
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+
+    /* La galería pasa de 4 columnas a 2: las tarjetas siguen siendo amplias
+       y el usuario puede ver dos mascotas por fila sin hacer zoom. */
+    .mascotas-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    /* Los refugios y veterinarias pasan de 3 columnas a 2.
+       La tarjeta sigue mostrando ícono + texto en fila porque hay espacio. */
+    .refugios-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    /* El hero no necesita tanto padding vertical en tableta. */
+    .hero-section {
+        padding: 80px 20px;
+    }
+}
+
+
+/* --------------------------------------------------------------------------
+   CELULAR — pantallas de 575px o menos (ej: iPhone, Galaxy S)
+   Bootstrap llama a este rango "xs".
+   -------------------------------------------------------------------------- */
+@media (max-width: 575px) {
+
+    /* Una sola columna: cada mascota ocupa todo el ancho de la pantalla.
+       Así la foto, el nombre y el botón se ven grandes y fáciles de tocar. */
+    .mascotas-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Refugios y veterinarias también en columna única en celular. */
+    .refugios-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* El hero reduce bastante el padding para que el texto quepa sin
+       verse apretado y el botón quede visible sin hacer scroll. */
+    .hero-section {
+        padding: 60px 16px;
+    }
+
+    /* El h1 del hero era display-4 (Bootstrap ~2.5rem). En celular lo
+       achicamos un poco para que no ocupe más de 2 líneas. */
+    .hero-section h1 {
+        font-size: 1.9rem;
+    }
+
+    /* La caja de filtros tenía 30px de padding. En celular la reducimos
+       para que los selects no queden pegados al borde de la pantalla. */
+    .custom-filters-container {
+        padding: 20px 16px;
+    }
+
+    /* Las tarjetas de refugio/veterinaria tenían ícono a la izquierda
+       y texto a la derecha (flex-direction:row). En celular los apilamos
+       en columna para que el texto tenga todo el ancho disponible. */
+    .refugio-card {
+        flex-direction: column;
+        align-items: center;   /* centra el ícono horizontalmente */
+        text-align: center;
+    }
+
+    /* Con la tarjeta en columna, el texto ya no necesita alinearse al inicio;
+       lo centramos para que se vea equilibrado debajo del ícono. */
+    .refugio-info {
+        text-align: center;
+    }
+
+    /* La lista de servicios también se centra para que coincida con el texto. */
+    .refugio-servicios {
+        text-align: left;  /* pero los ítems individuales se leen mejor a la izquierda */
+        display: inline-block;
+    }
+}
