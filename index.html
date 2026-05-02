@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdoptaCol - Adopción Responsable de Mascotas</title>
+
+    <!-- Bootstrap: base sólida de estilos y componentes reutilizables -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Íconos Bootstrap para embellecer botones y etiquetas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Nuestros estilos personalizados -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+    <!-- =====================================================================
+         1. BARRA DE NAVEGACIÓN
+         La barra fija de arriba con el logo y los enlaces principales.
+         navbar-expand hace que siempre esté desplegada, nunca se colapse.
+
+         CÓMO FUNCIONAN LOS LINKS DEL MENÚ:
+         - Inicio / Logo → llaman a scrollToTop() en JS para subir suavemente.
+         - Refugios → href="#refugios" apunta al id de la sección que existe
+           más abajo en el HTML. El scroll-behavior:smooth del CSS hace la
+           animación sin necesitar ninguna línea de JavaScript.
+         - Veterinarias Solidarias → mismo principio, href="#veterinarias"
+           apunta al id de esa sección en el HTML.
+         - Iniciar Sesión → data-bs-toggle="modal" le dice a Bootstrap que
+           abra el modal con id="#modalLogin" sin escribir JS extra.
+    ====================================================================== -->
+    <nav class="navbar navbar-expand navbar-light bg-light shadow-sm">
+        <div class="container">
+
+            <!-- Nombre/logo: al hacer clic sube la página con animación suave -->
+            <a class="navbar-brand fw-bold text-primary" href="#" onclick="scrollToTop(event)">AdoptaCol</a>
+
+            <!-- Los enlaces del menú, alineados a la derecha con ms-auto -->
+            <div class="navbar-nav ms-auto align-items-center">
+
+                <!-- Inicio: llama a scrollToTop() para subir con animación suave -->
+                <a class="nav-link active" aria-current="page" href="#" onclick="scrollToTop(event)">Inicio</a>
+
+                <!-- Refugios: href="#refugios" hace scroll suave hasta la sección
+                     con id="refugios" que está más abajo en este mismo archivo.
+                     El navegador maneja el scroll solo gracias a scroll-behavior:smooth en el CSS. -->
+                <a class="nav-link" href="#refugios">Refugios</a>
+
+                <!-- Veterinarias: igual que Refugios, apunta al id="veterinarias"
+                     que está en la sección correspondiente más abajo. -->
+                <a class="nav-link" href="#veterinarias">Veterinarias Solidarias</a>
+
+                <!-- Botón de login: data-bs-toggle + data-bs-target le dicen a Bootstrap
+                     que abra el modal con id="modalLogin" al hacer clic. Sin JS manual. -->
+                <button class="btn btn-primary px-4 text-white rounded-pill ms-3"
+                        data-bs-toggle="modal" data-bs-target="#modalLogin">
+                    Iniciar Sesión
+                </button>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- =====================================================================
+         2. LO PRIMERO QUE VE EL USUARIO
+         Banner grande con imagen de fondo, texto y un botón
+         que baja directo a ver las mascotas con scroll suave nativo del navegador.
+    ====================================================================== -->
+    <header class="hero-section text-center text-white d-flex align-items-center justify-content-center">
+        <div class="container px-4">
+            <h1 class="display-4 fw-bold mb-3">Dales una Segunda Oportunidad</h1>
+            <p class="lead mb-4">
+                La adopción responsable salva vidas y combate el abandono en nuestro país. <br>
+                Sé el puente de esperanza y encuentra a tu mejor amigo hoy.
+            </p>
+
+            <!-- href="#galeria" + scroll-behavior en el CSS hacen el scroll suave sin JS -->
+            <a href="#galeria" class="btn btn-light btn-lg text-primary fw-bold rounded-pill shadow">
+                Ver Mascotas Disponibles
+            </a>
+        </div>
+    </header>
+
+
+    <!-- =====================================================================
+         3. FILTROS DE BÚSQUEDA
+         Cada select tiene un data-filtro que el JS lee para saber qué atributo
+         comparar contra cada tarjeta. El botón Buscar dispara filterMascotas().
+         El botón Limpiar resetea todos los selects y vuelve a mostrar todo.
+    ====================================================================== -->
+    <section class="container my-5 custom-filters-container">
+        <h2 class="text-center mb-4 fs-3 fw-bold text-secondary">Encuentra a tu compañero ideal</h2>
+
+        <!-- onsubmit="return false" evita que el form recargue la página al presionar Enter -->
+        <form class="row g-3 justify-content-center align-items-end" onsubmit="return false;">
+
+            <!-- ¿En qué ciudad de Colombia está el usuario buscando? -->
+            <div class="col-2">
+                <label for="ciudad" class="form-label text-muted small">Ciudad</label>
+                <!-- data-filtro="ciudad" le dice al JS qué atributo data- leer en la tarjeta -->
+                <select id="ciudad" class="form-select border-primary" data-filtro="ciudad">
+                    <option value="">Todas</option>
+                    <option value="bogota">Bogotá</option>
+                    <option value="medellin">Medellín</option>
+                    <option value="cali">Cali</option>
+                </select>
+            </div>
+
+            <!-- Si alguien quiere cachorro o prefiere un adulto -->
+            <div class="col-2">
+                <label for="edad" class="form-label text-muted small">Edad</label>
+                <select id="edad" class="form-select border-primary" data-filtro="edad">
+                    <option value="">Cualquiera</option>
+                    <option value="cachorro">Cachorro</option>
+                    <option value="adulto">Adulto</option>
+                </select>
+            </div>
+
+            <!-- Tamaño del que desea la mascota -->
+            <div class="col-2">
+                <label for="tamano" class="form-label text-muted small">Tamaño</label>
+                <select id="tamano" class="form-select border-primary" data-filtro="tamano">
+                    <option value="">Todos</option>
+                    <option value="pequeno">Pequeño</option>
+                    <option value="mediano">Mediano</option>
+                    <option value="grande">Grande</option>
+                </select>
+            </div>
+
+            <!-- Por si alguien quiere criollo o le llama la atención una raza específica -->
+            <div class="col-2">
+                <label for="raza" class="form-label text-muted small">Tipo/Raza</label>
+                <select id="raza" class="form-select border-primary" data-filtro="raza">
+                    <option value="">Indiferente</option>
+                    <option value="criollo">Mestizo (Criollo)</option>
+                    <option value="pura">Raza Pura</option>
+                </select>
+            </div>
+
+            <!-- Buscar: aplica todos los filtros activos sobre las tarjetas -->
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary fw-bold px-4" onclick="filtrarMascotas()">
+                    <i class="bi bi-search me-1"></i> Buscar
+                </button>
+            </div>
+
+            <!-- Limpiar: borra todos los filtros y muestra todas las mascotas de nuevo -->
+            <div class="col-auto">
+                <button type="button" class="btn btn-outline-secondary fw-bold px-4" onclick="limpiarFiltros()">
+                    <i class="bi bi-x-circle me-1"></i> Limpiar
+                </button>
+            </div>
+
+        </form>
+
+        <!-- Mensaje que aparece cuando ninguna mascota coincide con los filtros elegidos -->
+        <div id="sinResultados" class="text-center mt-4 d-none">
+            <p class="text-muted fs-5">
+                <i class="bi bi-emoji-frown me-2"></i>
+                Ninguna mascota coincide con tu búsqueda. ¡Prueba con otros filtros!
+            </p>
+        </div>
+    </section>
+
+
+    <!-- =====================================================================
+         4. GALERÍA DE MASCOTAS
+         Cada article tiene atributos data-* que el JS usa para filtrar.
+         Siempre hay que mantener esos datos sincronizados con lo visible en el texto.
+    ====================================================================== -->
+    <main id="galeria" class="container my-5">
+        <div class="text-center mb-5">
+            <h3 class="fw-bold">Peluditos Esperando un Hogar</h3>
+            <p class="text-muted">Conoce a los rescatados listos para llenar tu vida de amor.</p>
+        </div>
+
+        <!-- El grid reparte los perfiles en 4 columnas fijas en escritorio -->
+        <div class="mascotas-grid" id="gridMascotas">
+
+            <!-- ─── LUNA ───
+                 data-ciudad, data-edad, data-tamano, data-raza: los lee el filtro.
+                 data-nombre y data-detalle: los usa el modal de "Me interesa" para
+                 mostrar el nombre y la raza sin repetir texto en el JS. -->
+            <article class="mascota-card"
+                     data-ciudad="bogota"
+                     data-edad="adulto"
+                     data-tamano="mediano"
+                     data-raza="criollo"
+                     data-nombre="Luna"
+                     data-detalle="Mestiza (Criolla) · 2 años">
+
+                <img src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                     alt="Luna - Perrita Mestiza" class="mascota-img">
+
+                <div class="card-content">
+                    <h4 class="mascota-nombre">Luna</h4>
+                    <p class="mascota-detalle">Mestiza (Criolla) · 2 años</p>
+                    <span class="status-badge bg-success">Disponible</span>
+
+                    <!-- Botón que abre el modal de interés pasándole los datos de esta mascota -->
+                    <button class="btn-interes"
+                            onclick="abrirModalInteres(this)"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalInteres">
+                        <i class="bi bi-heart me-1"></i> Me interesa
+                    </button>
+                </div>
+            </article>
+
+            <!-- ─── MAX ─── -->
+            <article class="mascota-card"
+                     data-ciudad="medellin"
+                     data-edad="adulto"
+                     data-tamano="grande"
+                     data-raza="pura"
+                     data-nombre="Max"
+                     data-detalle="Labrador Retriever · 4 años">
+
+                <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                     alt="Max - Perro Labrador" class="mascota-img">
+
+                <div class="card-content">
+                    <h4 class="mascota-nombre">Max</h4>
+                    <p class="mascota-detalle">Labrador Retriever · 4 años</p>
+                    <span class="status-badge bg-success">Disponible</span>
+
+                    <button class="btn-interes"
+                            onclick="abrirModalInteres(this)"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalInteres">
+                        <i class="bi bi-heart me-1"></i> Me interesa
+                    </button>
+                </div>
+            </article>
+
+            <!-- ─── MILO ─── -->
+            <article class="mascota-card"
+                     data-ciudad="bogota"
+                     data-edad="cachorro"
+                     data-tamano="pequeno"
+                     data-raza="criollo"
+                     data-nombre="Milo"
+                     data-detalle="Gato Criollo · 8 meses">
+
+                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                     alt="Milo - Gato rescatado" class="mascota-img">
+
+                <div class="card-content">
+                    <h4 class="mascota-nombre">Milo</h4>
+                    <p class="mascota-detalle">Gato Criollo · 8 meses</p>
+                    <span class="status-badge bg-success">Disponible</span>
+
+                    <button class="btn-interes"
+                            onclick="abrirModalInteres(this)"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalInteres">
+                        <i class="bi bi-heart me-1"></i> Me interesa
+                    </button>
+                </div>
+            </article>
+
+            <!-- ─── KIRA ───
+                 Está en proceso de adopción: el botón queda deshabilitado
+                 para que el usuario no pueda hacer solicitudes sobre ella. -->
+            <article class="mascota-card"
+                     data-ciudad="cali"
+                     data-edad="cachorro"
+                     data-tamano="grande"
+                     data-raza="pura"
+                     data-nombre="Kira"
+                     data-detalle="Husky Siberiano · 1 año">
+
+                <img src="https://images.unsplash.com/photo-1617895153857-82fe79adfcd4?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                     alt="Kira - Perra Husky Siberiano" class="mascota-img">
+
+                <div class="card-content">
+                    <h4 class="mascota-nombre">Kira</h4>
+                    <p class="mascota-detalle">Husky Siberiano · 1 año</p>
+                    <!-- Amarillo porque no está libre del todo, pero tampoco ocupado -->
+                    <span class="status-badge bg-warning text-dark">En proceso de adopción</span>
+
+                    <!-- disabled porque ya hay alguien en proceso: no se puede abrir el modal -->
+                    <button class="btn-interes btn-interes--deshabilitado" disabled>
+                        <i class="bi bi-clock me-1"></i> En proceso
+                    </button>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+
+    <!-- =====================================================================
+         5. SECCIÓN DE REFUGIOS
+         El id="refugios" es el ancla a la que apunta href="#refugios" en la
+         barra de navegación. El navegador hace scroll suave hasta aquí gracias
+         a scroll-behavior:smooth definido en el body del CSS.
+
+         Cada tarjeta de refugio usa la misma estructura de grid que las mascotas
+         pero con columnas de 3 (repeat(3,1fr)) para que quepan más datos por fila.
+         El botón "Ver mascotas" de cada refugio llama a filtrarPorRefugio(ciudad)
+         que selecciona esa ciudad en el filtro y dispara la búsqueda automáticamente,
+         llevando al usuario de vuelta a la galería con los resultados ya filtrados.
+    ====================================================================== -->
+    <section id="refugios" class="container my-5">
+
+        <div class="text-center mb-5">
+            <h3 class="fw-bold">Refugios Aliados</h3>
+            <p class="text-muted">Organizaciones que rescatan y cuidan a los peluditos hasta encontrarles hogar.</p>
+        </div>
+
+        <!-- Grid de 3 columnas: más ancho que las mascotas para mostrar la dirección -->
+        <div class="refugios-grid">
+
+            <!-- ─── REFUGIO PATITAS BOGOTÁ ───
+                 data-ciudad="bogota" lo usa filtrarPorRefugio() para preseleccionar
+                 el filtro de ciudad y mostrar solo las mascotas de ese refugio. -->
+            <article class="refugio-card" data-ciudad="bogota">
+                <div class="refugio-icono">
+                    <i class="bi bi-house-heart-fill"></i>
+                </div>
+                <div class="refugio-info">
+                    <h5 class="refugio-nombre">Patitas Bogotá</h5>
+                    <p class="refugio-detalle">
+                        <i class="bi bi-geo-alt-fill text-primary me-1"></i>Bogotá, Chapinero
+                    </p>
+                    <p class="refugio-desc">Rescatamos perros y gatos de la calle desde 2015. Más de 800 animales adoptados.</p>
+                    <!-- Al hacer clic filtra la galería por Bogotá y hace scroll hasta ella -->
+                    <button class="btn btn-sm btn-outline-primary rounded-pill mt-2"
+                            onclick="filtrarPorRefugio('bogota')">
+                        <i class="bi bi-search me-1"></i> Ver mascotas disponibles
+                    </button>
+                </div>
+            </article>
+
+            <!-- ─── HOGAR ANIMAL MEDELLÍN ─── -->
+            <article class="refugio-card" data-ciudad="medellin">
+                <div class="refugio-icono">
+                    <i class="bi bi-house-heart-fill"></i>
+                </div>
+                <div class="refugio-info">
+                    <h5 class="refugio-nombre">Hogar Animal Medellín</h5>
+                    <p class="refugio-detalle">
+                        <i class="bi bi-geo-alt-fill text-primary me-1"></i>Medellín, El Poblado
+                    </p>
+                    <p class="refugio-desc">Refugio sin ánimo de lucro con capacidad para 120 animales. Adoptamos en todo Antioquia.</p>
+                    <button class="btn btn-sm btn-outline-primary rounded-pill mt-2"
+                            onclick="filtrarPorRefugio('medellin')">
+                        <i class="bi bi-search me-1"></i> Ver mascotas disponibles
+                    </button>
+                </div>
+            </article>
+
+            <!-- ─── RESCATE CALI ─── -->
+            <article class="refugio-card" data-ciudad="cali">
+                <div class="refugio-icono">
+                    <i class="bi bi-house-heart-fill"></i>
+                </div>
+                <div class="refugio-info">
+                    <h5 class="refugio-nombre">Rescate Cali</h5>
+                    <p class="refugio-detalle">
+                        <i class="bi bi-geo-alt-fill text-primary me-1"></i>Cali, San Antonio
+                    </p>
+                    <p class="refugio-desc">Equipo voluntario especializado en rescate de emergencia y rehabilitación animal.</p>
+                    <button class="btn btn-sm btn-outline-primary rounded-pill mt-2"
+                            onclick="filtrarPorRefugio('cali')">
+                        <i class="bi bi-search me-1"></i> Ver mascotas disponibles
+                    </button>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================================
+         6. SECCIÓN DE VETERINARIAS SOLIDARIAS
+         El id="veterinarias" es el ancla del link href="#veterinarias" del navbar.
+         Funciona igual que la sección de refugios: el navegador hace scroll
+         suave hasta aquí sin necesitar JavaScript.
+
+         Cada tarjeta muestra: nombre, ciudad, servicios que ofrece y un botón
+         de WhatsApp. El link de WhatsApp usa el formato estándar de la API de
+         WhatsApp (https://wa.me/57NÚMERO) que abre la app o la web directamente.
+         target="_blank" abre en pestaña nueva para no sacar al usuario de la página.
+    ====================================================================== -->
+    <section id="veterinarias" class="bg-light py-5 mt-4">
+        <div class="container">
+
+            <div class="text-center mb-5">
+                <h3 class="fw-bold">Veterinarias Solidarias</h3>
+                <p class="text-muted">Clínicas que ofrecen tarifas reducidas o servicio gratuito para animales rescatados.</p>
+            </div>
+
+            <!-- Mismo grid de 3 columnas que la sección de refugios -->
+            <div class="refugios-grid">
+
+                <!-- ─── CLÍNICA AMIGOS PELUDOS ───
+                     El teléfono en el href de WhatsApp debe estar en formato
+                     internacional sin el "+": 57 (Colombia) + número sin el 0 inicial. -->
+                <article class="refugio-card">
+                    <div class="refugio-icono refugio-icono--verde">
+                        <i class="bi bi-hospital-fill"></i>
+                    </div>
+                    <div class="refugio-info">
+                        <h5 class="refugio-nombre">Clínica Amigos Peludos</h5>
+                        <p class="refugio-detalle">
+                            <i class="bi bi-geo-alt-fill text-success me-1"></i>Bogotá, Usaquén
+                        </p>
+                        <!-- Lista de servicios que ofrece esta veterinaria solidaria -->
+                        <ul class="refugio-servicios">
+                            <li><i class="bi bi-check-circle-fill text-success me-1"></i>Vacunación gratuita para rescatados</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-1"></i>Consulta con 50% de descuento</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-1"></i>Esterilización subsidiada</li>
+                        </ul>
+                        <!-- target="_blank" abre WhatsApp en pestaña nueva sin salir de AdoptaCol -->
+                        <a href="https://wa.me/573001234567" target="_blank" rel="noopener"
+                           class="btn btn-sm btn-success rounded-pill mt-2">
+                            <i class="bi bi-whatsapp me-1"></i> Contactar por WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+                <!-- ─── VET HUELLAS MEDELLÍN ─── -->
+                <article class="refugio-card">
+                    <div class="refugio-icono refugio-icono--verde">
+                        <i class="bi bi-hospital-fill"></i>
+                    </div>
+                    <div class="refugio-info">
+                        <h5 class="refugio-nombre">Vet Huellas Medellín</h5>
+                        <p class="refugio-detalle">
+                            <i class="bi bi-geo-alt-fill text-success me-1"></i>Medellín, Laureles
+                        </p>
+                        <ul class="refugio-servicios">
+                            <li><i class="bi bi-check-circle-fill text-success me-1"></i>Desparasitación gratuita</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-1"></i>Urgencias con tarifa social</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-1"></i>Microchip incluido en adopción</li>
+                        </ul>
+                        <a href="https://wa.me/573109876543" target="_blank" rel="noopener"
+                           class="btn btn-sm btn-success rounded-pill mt-2">
+                            <i class="bi bi-whatsapp me-1"></i> Contactar por WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+                <!-- ─── BIOVET CALI ─── -->
+                <article class="refugio-card">
+                    <div class="refugio-icono refugio-icono--verde">
+                        <i class="bi bi-hospital-fill"></i>
+                    </div>
+                    <div class="refugio-info">
+                        <h5 class="refugio-nombre">BioVet Cali</h5>
+                        <p class="refugio-detalle">
+                            <i class="bi bi-geo-alt-fill text-success me-1"></i>Cali, Granada
+                        </p>
+                        <ul class="refugio-servicios">
+                            <li><i class="bi bi-check-circle-fill text-success me-1"></i>Plan de salud para adoptantes</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-1"></i>Primera consulta sin costo</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-1"></i>Cirugías con pago diferido</li>
+                        </ul>
+                        <a href="https://wa.me/573205551234" target="_blank" rel="noopener"
+                           class="btn btn-sm btn-success rounded-pill mt-2">
+                            <i class="bi bi-whatsapp me-1"></i> Contactar por WhatsApp
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- =====================================================================
+         7. CIERRE DE LA PÁGINA
+         Sección del final con el nombre, la misión y el copyright.
+         mt-auto hace que siempre quede pegado al fondo incluso con poco contenido.
+    ====================================================================== -->
+    <footer class="bg-dark text-light py-5 mt-auto">
+        <div class="container text-center">
+            <h5 class="fw-bold text-primary">AdoptaCol</h5>
+            <p class="mb-3">Promoviendo el bienestar animal y la adopción responsable en toda Colombia.</p>
+            <p class="small text-secondary mb-0">&copy; 2026 AdoptaCol - Plataforma de Adopción. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+
+    <!-- =====================================================================
+         8. MODAL DE INICIO DE SESIÓN
+         Se abre con el botón "Iniciar Sesión" de la barra de navegación.
+         El formulario muestra una alerta de éxito y cierra el modal automáticamente.
+         En producción esto se conectaría a un backend real de autenticación.
+    ====================================================================== -->
+    <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="modalLoginLabel">
+                        <i class="bi bi-person-circle text-primary me-2"></i>Iniciar Sesión
+                    </h5>
+                    <!-- data-bs-dismiss cierra el modal sin necesitar JS extra -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body pt-2">
+
+                    <!-- Alerta de éxito: oculta por defecto, aparece al enviar el form -->
+                    <div id="alertaLogin" class="alert alert-success d-none" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        ¡Bienvenido de vuelta! Iniciando sesión…
+                    </div>
+
+                    <!-- Al enviar se llama a iniciarSesion() que valida y muestra la alerta -->
+                    <form id="formLogin" onsubmit="iniciarSesion(event)">
+
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label fw-semibold">Correo electrónico</label>
+                            <input type="email" class="form-control" id="loginEmail"
+                                   placeholder="tucorreo@ejemplo.com" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label fw-semibold">Contraseña</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="loginPassword"
+                                       placeholder="Tu contraseña" required minlength="6">
+                                <!-- Ojo para mostrar/ocultar la contraseña sin librerías extra -->
+                                <button class="btn btn-outline-secondary" type="button"
+                                        onclick="togglePassword('loginPassword', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <!-- Link de recuperación: en producción llevaría a la página de reset -->
+                            <div class="text-end mt-1">
+                                <a href="#" class="small text-primary text-decoration-none"
+                                   onclick="mostrarProximamente(event, 'Recuperar contraseña')">
+                                    ¿Olvidaste tu contraseña?
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold rounded-pill">
+                                Entrar
+                            </button>
+                        </div>
+
+                        <p class="text-center text-muted mt-3 mb-0 small">
+                            ¿No tienes cuenta?
+                            <a href="#" class="text-primary text-decoration-none fw-semibold"
+                               onclick="mostrarProximamente(event, 'Registro de usuario')">
+                                Regístrate gratis
+                            </a>
+                        </p>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =====================================================================
+         9. MODAL "ME INTERESA"
+         Se abre desde el botón de cada tarjeta de mascota disponible.
+         El JS llena dinámicamente el nombre y la raza antes de que Bootstrap
+         muestre el modal, así no necesitamos un modal por cada mascota.
+    ====================================================================== -->
+    <div class="modal fade" id="modalInteres" tabindex="-1" aria-labelledby="modalInteresLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="modalInteresLabel">
+                        <i class="bi bi-heart-fill text-danger me-2"></i>
+                        <!-- El JS pone el nombre de la mascota aquí -->
+                        ¡Me interesa adoptar a <span id="modalInteresNombre" class="text-primary"></span>!
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body pt-2">
+
+                    <!-- Muestra la raza y edad de la mascota seleccionada -->
+                    <p class="text-muted mb-3">
+                        <i class="bi bi-info-circle me-1"></i>
+                        <span id="modalInteresDetalle"></span>
+                    </p>
+
+                    <!-- Alerta de confirmación: oculta hasta que se envíe el formulario -->
+                    <div id="alertaInteres" class="alert alert-success d-none" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        ¡Solicitud enviada! El refugio se pondrá en contacto contigo pronto.
+                    </div>
+
+                    <form id="formInteres" onsubmit="enviarInteres(event)">
+
+                        <div class="mb-3">
+                            <label for="interesNombre" class="form-label fw-semibold">Tu nombre completo</label>
+                            <input type="text" class="form-control" id="interesNombre"
+                                   placeholder="Nombre y apellido" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="interesEmail" class="form-label fw-semibold">Correo electrónico</label>
+                            <input type="email" class="form-control" id="interesEmail"
+                                   placeholder="tucorreo@ejemplo.com" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="interesTelefono" class="form-label fw-semibold">Teléfono / WhatsApp</label>
+                            <input type="tel" class="form-control" id="interesTelefono"
+                                   placeholder="+57 300 000 0000">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="interesMensaje" class="form-label fw-semibold">¿Por qué quieres adoptarlo/a?</label>
+                            <textarea class="form-control" id="interesMensaje" rows="3"
+                                      placeholder="Cuéntale al refugio un poco sobre ti y tu hogar…"></textarea>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold rounded-pill">
+                                <i class="bi bi-send me-2"></i>Enviar solicitud
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =====================================================================
+         10. TOAST DE "PRÓXIMAMENTE"
+         Aparece en la esquina inferior derecha cuando el usuario hace clic
+         en Refugios, Veterinarias u otro enlace de sección no disponible aún.
+         Bootstrap lo maneja con su API JS: bootstrap.Toast.getInstance().
+    ====================================================================== -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+        <div id="toastProximamente" class="toast align-items-center text-white bg-primary border-0" role="alert"
+             aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body fw-semibold">
+                    <i class="bi bi-hammer me-2"></i>
+                    <!-- El JS pone el nombre de la sección aquí antes de mostrar el toast -->
+                    <span id="toastSeccion"></span> — ¡Próximamente disponible!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =====================================================================
+         11. SCRIPTS
+         Bootstrap primero (necesita Popper incluido en el bundle)
+         y después nuestra lógica personalizada de filtros y modales.
+    ====================================================================== -->
+
+    <!-- Bundle de Bootstrap con Popper: activa modales, toasts y otros componentes -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    /* =========================================================================
+       SCROLL SUAVE AL TOPE
+       Usamos scrollTo con behavior:'smooth' en lugar de href="#" puro
+       para que la animación sea consistente en todos los navegadores.
+    ========================================================================= */
+    function scrollToTop(evento) {
+        evento.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+
+    /* =========================================================================
+       FILTRAR POR REFUGIO
+       Se llama desde el botón "Ver mascotas disponibles" de cada tarjeta de refugio.
+
+       CÓMO FUNCIONA:
+       1. Recibe la ciudad del refugio que el usuario clickeó (ej: 'bogota').
+       2. Escribe ese valor en el select de ciudad del formulario de filtros.
+       3. Llama a filtrarMascotas() que ya sabe leer ese select y ocultar las
+          tarjetas que no coincidan, igual que si el usuario lo hubiera hecho a mano.
+       4. Hace scroll suave hasta la sección #galeria para que el usuario vea
+          los resultados sin tener que bajar la página manualmente.
+    ========================================================================= */
+    function filtrarPorRefugio(ciudad) {
+        // Paso 1: pone la ciudad en el select, como si el usuario la hubiera elegido
+        document.getElementById('ciudad').value = ciudad;
+
+        // Paso 2: ejecuta el filtro con ese valor ya cargado
+        filtrarMascotas();
+
+        // Paso 3: baja suavemente hasta la galería de mascotas para mostrar los resultados
+        document.getElementById('galeria').scrollIntoView({ behavior: 'smooth' });
+    }
+
+
+    /* =========================================================================
+       TOAST DE "PRÓXIMAMENTE"
+       Recibe el nombre de la sección que aún no existe,
+       lo escribe en el toast y lo muestra durante 3 segundos.
+    ========================================================================= */
+    function mostrarProximamente(evento, nombreSeccion) {
+        evento.preventDefault();
+
+        // Escribe el nombre de la sección en el span del toast
+        document.getElementById('toastSeccion').textContent = nombreSeccion;
+
+        // Obtiene la instancia del toast y la muestra
+        const toastEl = document.getElementById('toastProximamente');
+        const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+        toast.show();
+    }
+
+
+    /* =========================================================================
+       FILTRO DE MASCOTAS
+       Lee el valor de cada select y compara contra los data-* de cada tarjeta.
+       Si todos los filtros activos coinciden, se muestra la tarjeta; si no, se oculta.
+       Al final, si ninguna tarjeta quedó visible muestra el mensaje de "sin resultados".
+    ========================================================================= */
+    function filtrarMascotas() {
+        // Recoge los valores actuales de todos los selects
+        const ciudad = document.getElementById('ciudad').value;
+        const edad   = document.getElementById('edad').value;
+        const tamano = document.getElementById('tamano').value;
+        const raza   = document.getElementById('raza').value;
+
+        // Trae todas las tarjetas del grid
+        const tarjetas = document.querySelectorAll('.mascota-card');
+        let visibles = 0;
+
+        tarjetas.forEach(tarjeta => {
+            // Lee los datos de la tarjeta (definidos en los atributos data-*)
+            const datosCiudad = tarjeta.dataset.ciudad;
+            const datosEdad   = tarjeta.dataset.edad;
+            const datosTamano = tarjeta.dataset.tamano;
+            const datosRaza   = tarjeta.dataset.raza;
+
+            /* Un filtro vacío ("") significa "cualquiera", así que solo filtra
+               cuando el usuario eligió un valor concreto distinto de la opción por defecto */
+            const pasaCiudad = !ciudad || datosCiudad === ciudad;
+            const pasaEdad   = !edad   || datosEdad   === edad;
+            const pasaTamano = !tamano || datosTamano === tamano;
+            const pasaRaza   = !raza   || datosRaza   === raza;
+
+            if (pasaCiudad && pasaEdad && pasaTamano && pasaRaza) {
+                // Mostrar: quitamos d-none y añadimos la animación de entrada
+                tarjeta.classList.remove('d-none', 'card-oculta');
+                tarjeta.classList.add('card-visible');
+                visibles++;
+            } else {
+                // Ocultar con transición suave antes de aplicar d-none
+                tarjeta.classList.remove('card-visible');
+                tarjeta.classList.add('card-oculta');
+                // Esperamos a que termine la transición CSS para poner d-none
+                setTimeout(() => tarjeta.classList.add('d-none'), 300);
+            }
+        });
+
+        // Si no quedó ninguna visible, mostrar el mensaje de "sin resultados"
+        const sinResultados = document.getElementById('sinResultados');
+        sinResultados.classList.toggle('d-none', visibles > 0);
+    }
+
+
+    /* =========================================================================
+       LIMPIAR FILTROS
+       Vuelve todos los selects al primer option (valor vacío) y muestra
+       todas las tarjetas de nuevo sin animación de "oculta".
+    ========================================================================= */
+    function limpiarFiltros() {
+        // Pone todos los selects de vuelta en la primera opción
+        ['ciudad', 'edad', 'tamano', 'raza'].forEach(id => {
+            document.getElementById(id).value = '';
+        });
+
+        // Muestra todas las tarjetas quitando la clase que las oculta
+        document.querySelectorAll('.mascota-card').forEach(tarjeta => {
+            tarjeta.classList.remove('d-none', 'card-oculta');
+            tarjeta.classList.add('card-visible');
+        });
+
+        // Esconde el mensaje de "sin resultados"
+        document.getElementById('sinResultados').classList.add('d-none');
+    }
+
+
+    /* =========================================================================
+       MODAL "ME INTERESA"
+       Antes de que Bootstrap muestre el modal, copiamos el nombre y el detalle
+       de la tarjeta clickeada hacia los spans del modal.
+       Así un solo modal sirve para todas las mascotas.
+    ========================================================================= */
+    function abrirModalInteres(boton) {
+        // Sube en el DOM hasta el article .mascota-card padre del botón
+        const tarjeta = boton.closest('.mascota-card');
+
+        // Llena los textos dinámicos del modal con los datos de la tarjeta
+        document.getElementById('modalInteresNombre').textContent = tarjeta.dataset.nombre;
+        document.getElementById('modalInteresDetalle').textContent = tarjeta.dataset.detalle;
+
+        // Limpia el formulario y esconde la alerta de éxito por si venía de otra mascota
+        document.getElementById('formInteres').reset();
+        document.getElementById('alertaInteres').classList.add('d-none');
+    }
+
+
+    /* =========================================================================
+       ENVIAR SOLICITUD DE ADOPCIÓN
+       Simula el envío del formulario: muestra la alerta de éxito y cierra
+       el modal después de 2 segundos. En producción aquí iría un fetch() al backend.
+    ========================================================================= */
+    function enviarInteres(evento) {
+        evento.preventDefault();
+
+        // Muestra la alerta de confirmación dentro del modal
+        document.getElementById('alertaInteres').classList.remove('d-none');
+
+        // Oculta el formulario para que no se pueda enviar dos veces
+        document.getElementById('formInteres').classList.add('d-none');
+
+        // Cierra el modal automáticamente después de 2 segundos
+        setTimeout(() => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalInteres'));
+            modal.hide();
+            // Vuelve a mostrar el form para la próxima vez que se abra el modal
+            document.getElementById('formInteres').classList.remove('d-none');
+        }, 2000);
+    }
+
+
+    /* =========================================================================
+       INICIAR SESIÓN (SIMULADO)
+       Muestra la alerta de éxito y cierra el modal después de 1.5 segundos.
+       En producción aquí iría el fetch() con las credenciales al backend.
+    ========================================================================= */
+    function iniciarSesion(evento) {
+        evento.preventDefault();
+
+        // Muestra la alerta de "bienvenido"
+        document.getElementById('alertaLogin').classList.remove('d-none');
+
+        // Oculta el formulario para que no se vea redundante
+        document.getElementById('formLogin').classList.add('d-none');
+
+        // Cierra el modal después de 1.5 segundos
+        setTimeout(() => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalLogin'));
+            modal.hide();
+            // Restaura el form para la próxima apertura
+            document.getElementById('formLogin').classList.remove('d-none');
+            document.getElementById('alertaLogin').classList.add('d-none');
+            document.getElementById('formLogin').reset();
+        }, 1500);
+    }
+
+
+    /* =========================================================================
+       MOSTRAR / OCULTAR CONTRASEÑA
+       Alterna el type del input entre "password" y "text"
+       y cambia el ícono del ojo en el botón de forma acorde.
+    ========================================================================= */
+    function togglePassword(inputId, boton) {
+        const input = document.getElementById(inputId);
+        const icono = boton.querySelector('i');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icono.classList.replace('bi-eye', 'bi-eye-slash');
+        } else {
+            input.type = 'password';
+            icono.classList.replace('bi-eye-slash', 'bi-eye');
+        }
+    }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,403 @@
+/* ==========================================================================
+   BODY — COLOR DE FONDO, FUENTE GENERAL Y ESTRUCTURA FLEXBOX
+   display:flex + flex-direction:column + min-height:100vh garantizan
+   que el footer siempre quede pegado al fondo aunque el contenido sea corto.
+   scroll-behavior:smooth activa el desplazamiento animado al hacer clic en
+   cualquier enlace tipo href="#seccion", sin una sola línea de JavaScript.
+   ========================================================================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fcfcfc;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+}
+
+
+/* ==========================================================================
+   HERO — EL BANNER GRANDE DE ENTRADA
+   El padding de 120px arriba y abajo le da altura sin tener que fijar px exactos.
+   El degradado azul oscuro va encima de la foto como una capa semitransparente:
+   así el texto blanco se lee sin importar qué tan clara sea la imagen de fondo.
+   ========================================================================== */
+.hero-section {
+    /* Sin este padding el banner quedaría como una franja muy delgada */
+    padding: 120px 20px;
+
+    /* Primero el degradado semitransparente, después la foto.
+       El degradado tapa parcialmente la imagen para que el texto quede legible. */
+    background: linear-gradient(rgba(13, 110, 253, 0.85), rgba(0, 50, 120, 0.85)),
+                url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+}
+
+
+/* ==========================================================================
+   CAJA DE FILTROS
+   Una tarjeta blanca flotante donde viven los selectores de búsqueda.
+   La sombra muy tenue le da sensación de profundidad sin que se vea anticuada.
+   ========================================================================== */
+.custom-filters-container {
+    background-color: #ffffff;
+
+    /* El borde finísimo define dónde termina la caja */
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+
+    /* El padding interno evita que los selectores toquen los bordes de la caja */
+    padding: 30px;
+
+    /* Sombra casi invisible, solo para dar profundidad */
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+
+/* ==========================================================================
+   GALERÍA — CSS GRID DE ESCRITORIO
+   Cuatro columnas que se reparten el espacio disponible por igual (1fr cada una).
+   El gap controla el espacio entre tarjetas tanto en horizontal como en vertical.
+   ========================================================================== */
+.mascotas-grid {
+    display: grid;
+
+    /* 4 columnas que se distribuyen el ancho de forma equitativa */
+    grid-template-columns: repeat(4, 1fr);
+
+    /* Espacio uniforme entre tarjetas en todas las direcciones */
+    gap: 30px;
+
+    /* Separación del encabezado de la sección */
+    padding: 20px 0;
+}
+
+
+/* ==========================================================================
+   ANIMACIONES DE FILTRADO
+   Cuando el JS oculta una tarjeta le agrega .card-oculta para que la
+   transición de opacidad ocurra antes de aplicar display:none.
+   .card-visible es el estado normal, siempre visible con opacidad completa.
+   ========================================================================== */
+.mascota-card {
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Fade-out rápido antes de que el JS aplique d-none */
+.mascota-card.card-oculta {
+    opacity: 0;
+    transform: scale(0.97);
+}
+
+/* Fade-in cuando la tarjeta vuelve a aparecer al limpiar filtros */
+.mascota-card.card-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* ==========================================================================
+   PERFIL DE MASCOTA
+   La cajita blanca que envuelve foto, nombre, raza y botón de cada animal.
+   overflow:hidden es crítico: sin él la foto se desbordaría por encima
+   de las esquinas redondeadas del borde superior de la tarjeta.
+   ========================================================================== */
+.mascota-card {
+    background-color: #ffffff;
+
+    /* BORDER: el contorno gris claro que define dónde empieza y termina el perfil */
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    /* Sin esto la foto se desbordaría sobre las esquinas redondeadas de arriba */
+    overflow: hidden;
+
+    /* MARGIN en cero para que el gap del grid controle el espacio entre perfiles */
+    margin: 0;
+
+    /* Sombra suave para que los perfiles parezcan estar sobre la página */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+    /* La transición hace que hover y el filtrado se sientan fluidos, no bruscos */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+/* Al pasar el mouse la tarjeta sube 8px, como si se despegara de la pantalla */
+.mascota-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+
+/* ==========================================================================
+   FOTO DE LA MASCOTA
+   Todas las imágenes tienen la misma altura fija para que el grid quede
+   ordenado aunque las fotos originales vengan en proporciones distintas.
+   object-fit:cover recorta inteligentemente para llenar el espacio sin deformar.
+   ========================================================================== */
+.mascota-img {
+    /* Ancho completo del perfil, siempre */
+    width: 100%;
+
+    /* Altura fija: ninguna foto más alta o más baja rompe la uniformidad */
+    height: 240px;
+
+    /* object-fit:cover actúa como un "zoom centrado": llena sin estirar */
+    object-fit: cover;
+
+    /* display:block borra el espacio fantasma que los <img> dejan abajo por defecto */
+    display: block;
+
+    /* Línea que separa visualmente la foto del área de texto debajo */
+    border-bottom: 2px solid #e5e7eb;
+}
+
+
+/* ==========================================================================
+   ÁREA DE TEXTO DEL PERFIL DE LA MASCOTA
+   El padding interno evita que el texto toque los bordes de la tarjeta.
+   display:flex en columna permite empujar el botón siempre hacia abajo
+   con margin-top:auto, independientemente de cuánto texto haya arriba.
+   ========================================================================== */
+.card-content {
+    padding: 24px;
+
+    /* Flexbox en columna para alinear verticalmente todos los elementos */
+    display: flex;
+    flex-direction: column;
+
+    /* Ocupa todo el alto disponible de la tarjeta bajo la foto */
+    flex: 1;
+}
+
+/* Nombre del animal en grande y negrita */
+.mascota-nombre {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #212529;
+
+    /* MARGIN-BOTTOM: espacio que separa el nombre de la raza/edad debajo */
+    margin: 0;
+    margin-bottom: 8px;
+}
+
+/* Raza y edad en gris */
+.mascota-detalle {
+    font-size: 0.95rem;
+    color: #6c757d;
+
+    /* MARGIN-BOTTOM: espacio que separa la raza del badge de estado debajo */
+    margin: 0;
+    margin-bottom: 12px;
+}
+
+
+/* ==========================================================================
+   ESTADO: DISPONIBLE O EN PROCESO DE ADOPCIÓN
+   El color de fondo (verde o amarillo) lo pone Bootstrap con .bg-success / .bg-warning.
+   Aquí solo definimos la forma tipo cápsula, el tamaño y el estilo del texto.
+   ========================================================================== */
+.status-badge {
+    /* PADDING: sin esto el badge quedaría como texto sin forma propia */
+    padding: 6px 14px;
+
+    /* Bordes muy redondeados para que parezca una píldora */
+    border-radius: 20px;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    /* Mayúsculas y espaciado entre letras para que se lea como etiqueta oficial */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    /* inline-block para que el padding funcione bien en un elemento <span> */
+    display: inline-block;
+
+    /* Espacio antes del botón de "Me interesa" que viene justo debajo */
+    margin-bottom: 16px;
+}
+
+
+/* ==========================================================================
+   BOTÓN "ME INTERESA"
+   Aparece en la parte inferior de cada tarjeta de mascota disponible.
+   margin-top:auto lo empuja siempre hacia el fondo de la tarjeta,
+   sin importar cuánto texto haya arriba, gracias al flexbox de .card-content.
+   ========================================================================== */
+.btn-interes {
+    /* Empuja el botón al fondo del flexbox de .card-content */
+    margin-top: auto;
+
+    /* Aspecto visual: fondo blanco con borde primario, tipo "ghost button" */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 16px;
+    border: 2px solid #0d6efd;
+    border-radius: 50px;
+    background-color: transparent;
+    color: #0d6efd;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+
+    /* La transición suaviza el cambio de color en hover */
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+/* Al pasar el mouse: se rellena de azul y el texto vira a blanco */
+.btn-interes:hover {
+    background-color: #0d6efd;
+    color: #ffffff;
+    transform: scale(1.03);
+}
+
+/* Al hacer clic: rebota suavemente hacia abajo */
+.btn-interes:active {
+    transform: scale(0.98);
+}
+
+/* Estado deshabilitado para mascotas en proceso de adopción (ej: Kira).
+   cursor:not-allowed refuerza visualmente que la acción no está disponible. */
+.btn-interes--deshabilitado {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 16px;
+    border: 2px solid #ced4da;
+    border-radius: 50px;
+    background-color: transparent;
+    color: #adb5bd;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: not-allowed;
+}
+
+
+/* ==========================================================================
+   MODALES — MEJORAS VISUALES SOBRE EL BASE DE BOOTSTRAP
+   Bootstrap ya trae el comportamiento; aquí solo refinamos detalles de estilo
+   como el radio del borde de los inputs y el color del botón de cierre.
+   ========================================================================== */
+
+/* Inputs y textareas con radio consistente con el resto del diseño */
+.modal .form-control {
+    border-radius: 8px;
+    border-color: #dee2e6;
+}
+
+/* El input resaltado al hacer focus usa el color primario del sitio */
+.modal .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* Redondeo del modal-content para que se vea más moderno */
+.modal-content {
+    border-radius: 16px;
+}
+
+
+/* ==========================================================================
+   SECCIONES DE REFUGIOS Y VETERINARIAS
+   Ambas secciones comparten el mismo grid de 3 columnas (.refugios-grid)
+   y la misma estructura de tarjeta (.refugio-card), lo que hace que el
+   mantenimiento sea más fácil: un cambio aquí afecta a las dos secciones.
+   ========================================================================== */
+
+/* Grid de 3 columnas: más ancho por tarjeta que la galería de mascotas
+   para que quepa la dirección, los servicios y el botón en cada fila */
+.refugios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    padding: 10px 0;
+}
+
+/* Tarjeta base: fondo blanco, borde sutil y sombra leve.
+   display:flex en fila permite poner el ícono a la izquierda y el
+   texto a la derecha sin necesitar posicionamiento absoluto. */
+.refugio-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+    /* La transición suaviza el efecto hover igual que en las tarjetas de mascotas */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.refugio-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+}
+
+/* Círculo de ícono azul (refugios) o verde (veterinarias).
+   El tamaño fijo de 56x56px mantiene todos los íconos alineados. */
+.refugio-icono {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;                /* min-width evita que flex lo comprima */
+    border-radius: 50%;
+    background-color: #e7f0ff;
+    color: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Variante verde para el ícono de veterinarias solidarias */
+.refugio-icono--verde {
+    background-color: #e8f8f0;
+    color: #198754;
+}
+
+/* Área de texto a la derecha del ícono */
+.refugio-info {
+    flex: 1;
+}
+
+/* Nombre del refugio o veterinaria */
+.refugio-nombre {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #212529;
+    margin: 0 0 6px 0;
+}
+
+/* Ciudad y barrio con ícono de pin */
+.refugio-detalle {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin: 0 0 8px 0;
+}
+
+/* Descripción corta del refugio o lista de servicios de la veterinaria */
+.refugio-desc {
+    font-size: 0.9rem;
+    color: #495057;
+    margin: 0;
+}
+
+/* Lista de servicios de las veterinarias: sin bullet nativo del navegador,
+   ya que usamos íconos de Bootstrap Icons en su lugar */
+.refugio-servicios {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.88rem;
+    color: #495057;
+}
+
+.refugio-servicios li {
+    margin-bottom: 4px;
+}
