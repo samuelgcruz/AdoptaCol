@@ -117,7 +117,12 @@
             </p>
 
             <!-- href="#galeria" + scroll-behavior en el CSS hacen el scroll suave sin JS -->
-            <a href="#galeria" class="btn btn-light btn-lg text-primary fw-bold rounded-pill shadow">
+            <!--
+                 MÓVIL — py-3 px-4: aumenta el padding del botón para que la zona táctil
+                 supere los 48px de alto recomendados por las guías de accesibilidad móvil.
+                 En escritorio el tamaño se mantiene con btn-lg.
+            -->
+            <a href="#galeria" class="btn btn-light btn-lg text-primary fw-bold rounded-pill shadow py-3 px-4">
                 Ver Mascotas Disponibles
             </a>
         </div>
@@ -130,7 +135,12 @@
          comparar contra cada tarjeta. El botón Buscar dispara filterMascotas().
          El botón Limpiar resetea todos los selects y vuelve a mostrar todo.
     ====================================================================== -->
-    <section class="container my-5 custom-filters-container">
+    <!--
+         MÓVIL — mx-3 mx-sm-auto: en celular agrega margen lateral para
+         que la caja de filtros no toque los bordes de la pantalla.
+         En sm en adelante el container ya se centra con los márgenes de Bootstrap.
+    -->
+    <section class="container my-5 custom-filters-container mx-3 mx-sm-auto">
         <h2 class="text-center mb-4 fs-3 fw-bold text-secondary">Encuentra a tu compañero ideal</h2>
 
         <!-- onsubmit="return false" evita que el form recargue la página al presionar Enter -->
@@ -225,7 +235,12 @@
          Cada article tiene atributos data-* que el JS usa para filtrar.
          Siempre hay que mantener esos datos sincronizados con lo visible en el texto.
     ====================================================================== -->
-    <main id="galeria" class="container my-5">
+    <!--
+         MÓVIL — px-3: padding horizontal en celular para que las tarjetas
+         no toquen los bordes de la pantalla. En pantallas más grandes el
+         .container de Bootstrap ya centra y margina el contenido correctamente.
+    -->
+    <main id="galeria" class="container my-5 px-3 px-sm-0">
         <div class="text-center mb-5">
             <h3 class="fw-bold">Peluditos Esperando un Hogar</h3>
             <p class="text-muted">Conoce a los rescatados listos para llenar tu vida de amor.</p>
@@ -359,7 +374,11 @@
          que selecciona esa ciudad en el filtro y dispara la búsqueda automáticamente,
          llevando al usuario de vuelta a la galería con los resultados ya filtrados.
     ====================================================================== -->
-    <section id="refugios" class="container my-5">
+    <!--
+         MÓVIL — px-3: igual que la galería, evita que las tarjetas de
+         refugio toquen los bordes laterales de la pantalla en celular.
+    -->
+    <section id="refugios" class="container my-5 px-3 px-sm-0">
 
         <div class="text-center mb-5">
             <h3 class="fw-bold">Refugios Aliados</h3>
