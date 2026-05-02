@@ -121,10 +121,35 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
 }
 
-/* Al pasar el mouse la tarjeta sube 8px, como si se despegara de la pantalla */
-.mascota-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+/*
+   MÓVIL — @media (hover: hover): esta condición es verdadera solo en
+   dispositivos que tienen un cursor real (ratón o trackpad). En celulares
+   y tablets táctiles el navegador reporta hover:none, así que estos estilos
+   no se aplican. Sin este wrapper, al tocar una tarjeta en móvil el efecto
+   de "levantar" se activaba y se quedaba pegado hasta que el usuario tocaba
+   otra parte de la pantalla, lo que se veía como un bug visual.
+*/
+@media (hover: hover) {
+
+    /* Al pasar el mouse la tarjeta de mascota sube 8px */
+    .mascota-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+    }
+
+    /* Al pasar el mouse el botón "Me interesa" se rellena de azul */
+    .btn-interes:hover {
+        background-color: #0d6efd;
+        color: #ffffff;
+        transform: scale(1.03);
+    }
+
+    /* Al pasar el mouse la tarjeta de refugio/veterinaria sube 6px */
+    .refugio-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+    }
+
 }
 
 
@@ -246,14 +271,7 @@ body {
     transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
 
-/* Al pasar el mouse: se rellena de azul y el texto vira a blanco */
-.btn-interes:hover {
-    background-color: #0d6efd;
-    color: #ffffff;
-    transform: scale(1.03);
-}
-
-/* Al hacer clic: rebota suavemente hacia abajo */
+/* Al hacer clic: rebota suavemente hacia abajo (el :active sí funciona en táctil, lo dejamos fuera del wrapper) */
 .btn-interes:active {
     transform: scale(0.98);
 }
@@ -333,11 +351,6 @@ body {
 
     /* La transición suaviza el efecto hover igual que en las tarjetas de mascotas */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.refugio-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.1);
 }
 
 /* Círculo de ícono azul (refugios) o verde (veterinarias).
@@ -495,5 +508,28 @@ body {
     .refugio-servicios {
         text-align: left;  /* pero los ítems individuales se leen mejor a la izquierda */
         display: inline-block;
+    }
+
+    /*
+       MÓVIL — altura de la foto de mascota.
+       En escritorio los 240px dan una foto generosa porque la tarjeta es angosta
+       (1/4 del ancho). En celular la tarjeta ocupa el ancho completo, así que
+       240px de foto hacen que el usuario tenga que hacer mucho scroll solo para
+       ver el nombre y el botón. Con 190px la foto sigue siendo atractiva y el
+       contenido importante queda visible sin bajar.
+    */
+    .mascota-img {
+        height: 190px;
+    }
+
+    /*
+       MÓVIL — padding interno del área de texto de la tarjeta.
+       Los 24px de cada lado en escritorio funcionan bien porque la tarjeta es
+       angosta. En celular eso son 48px robados al texto en total, dejando el
+       nombre y la raza en un espacio muy estrecho. Con 16px el texto respira
+       y el botón "Me interesa" queda con mejor proporción.
+    */
+    .card-content {
+        padding: 16px;
     }
 }
